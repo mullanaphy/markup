@@ -2,7 +2,7 @@
     "name": "phy/markup",
     "description": "Dynamic HTML builder, nothing super worth while. It does supports default HTML3, HTML4, HTML5, and XHTML tags.",
     "keywords": ["html", "builder", "psr-3"],
-    "homepage": "http://github.com/mullanaphy/markup",
+    "homepage": "https://github.com/mullanaphy/markup",
     "type": "library",
     "license": "DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE",
     "authors": [
