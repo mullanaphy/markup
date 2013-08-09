@@ -1,0 +1,87 @@
+PHY\Markup - HTML Builder for PHP 5.4+
+================================================================================
+
+
+PHY\Markup gives you a nice little HTML builder. You can append/prepend elements
+to your main HTML element and they'll all render out on echo.
+
+Uses a little black magic with a few __call and __get methods but they do make
+it nicer on the eyes.
+
+Usage
+-----
+
+```php
+<?php
+
+use PHY\Markup\HTML5 as Markup;
+
+/*
+ * Create an article tag with a class of "article".
+ */
+$markup = new Markup;
+$article = $markup->article;
+$article->class('article');
+
+/*
+ * Use our HTML helper to create some elements for us.
+ */
+$helper = $markup->helper();
+$url = $helper->url('Our Link\'s title!', [
+    '/rest.php',
+    'key' => 'value'
+]);
+
+/*
+ * Add some extra content to our article.
+ */
+$article
+    ->append($markup->header($markup->h2('H2 Heading!'),['class' => 'header'))
+    ->append($markup->section($markup->p('Inner P tag!')))
+    ->append($markup->footer->append($url));
+
+/*
+ * Recursively generate our HTML on echo.
+ * Produces: <article class="article"><header class="header"><h2>H2 Heading!</h2></header><section><p>Inner P tag!</p></section><footer><a href="/rest.php?key=value">Our Link's Title!</a></footer></article>
+ */
+echo $article;
+```
+
+
+About
+-----
+
+Requirements
+------------
+
+- PHP 5.4+
+
+Submitting bugs and feature requests
+------------------------------------
+
+PPlease send bugs to me via
+[GitHub](https://github.com/mullanaphy/markup/issues)
+
+Author
+------
+
+John Mullanaphy - <john@jo.mu> - <http://jo.mu/>
+That's it for now...
+
+License
+-------
+
+PHY\Markup is licensed under the DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE -
+see the `LICENSE` file for details
+
+Acknowledgements
+----------------
+
+This library was based on an old perl HTML builder I used many eons ago. I liked
+it then so I wanted to continue it's sexiness in PHP.
+
+TODO
+----
+
+Finish writing tests for this. Finish my other projects that utilize this class.
+Add some more documentation and examples.
