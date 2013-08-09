@@ -48,6 +48,16 @@
         }
 
         /**
+         * Remove the markup reference to try and help out PHP's garbage
+         * collection.
+         */
+        public function __destruct()
+        {
+            $this->markup = null;
+            unset($this->markup);
+        }
+
+        /**
          * Sets an attribute based on $tag->$key($value);
          */
         public function __call($key, $parameters)
@@ -241,15 +251,15 @@
                 if ('data' === $key && is_array($value)) {
                     foreach ($value as $k => $v) {
                         $return[] = 'data-'.$k.'="'.htmlentities(is_array($v)
-                            ? implode(' ', $v)
-                            : $v, ENT_QUOTES, 'UTF-8', false
-                        ).'"';
+                                    ? implode(' ', $v)
+                                    : $v, ENT_QUOTES, 'UTF-8', false
+                            ).'"';
                     }
                 } else {
                     $return[] = $key.'="'.htmlentities(is_array($value)
-                        ? implode(' ', $value)
-                        : $value, ENT_QUOTES, 'UTF-8', false
-                    ).'"';
+                                ? implode(' ', $value)
+                                : $value, ENT_QUOTES, 'UTF-8', false
+                        ).'"';
                 }
             }
             return count($return)

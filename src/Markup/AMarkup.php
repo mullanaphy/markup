@@ -30,6 +30,16 @@
         protected $tags = [];
 
         /**
+         * Remove the helper reference to try and help out PHP's garbage
+         * collection.
+         */
+        public function __destruct()
+        {
+            $this->helper = null;
+            unset($this->helper);
+        }
+
+        /**
          * Calls a tag based on $Markup->$tag();
          *
          * @param mixed $innerHTML
@@ -44,14 +54,14 @@
             }
             if (in_array($function, $this->voids)) {
                 $element = new \PHY\Markup\Element($this, $function, ((isset($parameters[0]))
-                    ? $this->attributes($function, $parameters[0])
-                    : null
-                ), true);
+                        ? $this->attributes($function, $parameters[0])
+                        : null
+                    ), true);
             } else {
                 $element = new \PHY\Markup\Element($this, $function, ((isset($parameters[1]))
-                    ? $this->attributes($function, $parameters[1])
-                    : null
-                ), false);
+                        ? $this->attributes($function, $parameters[1])
+                        : null
+                    ), false);
                 if (isset($parameters[0])) {
                     $element->append($parameters[0]);
                 }
@@ -217,7 +227,7 @@
          */
         public function helper(\PHY\Markup\Helper $helper = null)
         {
-            if(null !== $helper) {
+            if (null !== $helper) {
                 $this->helper = $helper;
             } else if (null === $this->helper) {
                 $this->helper = new \PHY\Markup\Helper($this);

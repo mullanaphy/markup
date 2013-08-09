@@ -25,9 +25,39 @@
 
         protected $markup = null;
 
+        /**
+         * Inject our Markup object.
+         *
+         * @param \PHY\Markup\AMarkup $markup
+         */
         public function __construct(\PHY\Markup\AMarkup $markup)
         {
-            $this->markup = $markup;
+            $this->markup($markup);
+        }
+
+        /**
+         * Remove the markup reference to try and help out PHP's garbage
+         * collection.
+         */
+        public function __destruct()
+        {
+            $this->markup = null;
+            unset($this->markup);
+        }
+
+        /**
+         * Getter\Setter for \PHY\Markup\AMarkup.
+         * 
+         * @param \PHY\Markup\AMarkup $name Description
+         * @return \PHY\Markup\AMarkup
+         */
+        public function markup(\PHY\Markup\AMarkup $markup = null)
+        {
+            if (null !== $markup) {
+                $this->markup = $markup;
+                $markup->helper($this);
+            }
+            return $this->markup;
         }
 
         /**
@@ -283,21 +313,21 @@
                         $this->markup->input(
                             ($key === $checked)
                                 ? [
-                                    'checked' => 'checked',
-                                    'id' => $id.'-'.$key,
-                                    'name' => $name,
-                                    'type' => 'radio',
-                                    'value' => $key
+                                'checked' => 'checked',
+                                'id' => $id.'-'.$key,
+                                'name' => $name,
+                                'type' => 'radio',
+                                'value' => $key
                                 ]
                                 : [
-                                    'id' => $id.'-'.$key,
-                                    'name' => $name,
-                                    'type' => 'radio',
-                                    'value' => $key
+                                'id' => $id.'-'.$key,
+                                'name' => $name,
+                                'type' => 'radio',
+                                'value' => $key
                                 ]
                         ),
                         $value
-                    ], $attributes);
+                        ], $attributes);
                 }
                 $radio[] = $label;
             }
@@ -467,9 +497,9 @@
                 }
             }
             $attributes = $this->markup->attributes((($size <= 1)
-                ? 'input'
-                : 'textarea'
-            ), $attributes);
+                    ? 'input'
+                    : 'textarea'
+                ), $attributes);
             $attributes['name'] = $name;
             if ($size <= 1) {
                 if (null !== $value) {
