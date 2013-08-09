@@ -25,17 +25,17 @@
         /**
          * Create a Markup instance based on the language.
          *
-         * @param type $markup
-         * @return \PHY\class
+         * @param string $markup
+         * @return \PHY\Markup\AMarkup
          * @throws \PHY\Markup\Exception
          */
         public static function create($markup = 'HTML5')
         {
-            $class = '\\PHY\\Markup\\'.$markup;
+            $class = __NAMESPACE__.'\\'.$markup;
             if (class_exists($class)) {
                 return new $class;
             } else {
-                throw new \PHY\Markup\Exception('Could not find markup language for "'.$markup.'"');
+                throw new namespace\Exception('Could not find markup language for "'.$markup.'"');
             }
         }
 
