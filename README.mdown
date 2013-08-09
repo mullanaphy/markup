@@ -45,6 +45,28 @@ $article
  * Produces: <article class="article"><header class="header"><h2>H2 Heading!</h2></header><section><p>Inner P tag!</p></section><footer><a href="/rest.php?key=value">Our Link's Title!</a></footer></article>
  */
 echo $article;
+
+/*
+ * Also, you can use the Markup::create('HTML5');
+ */
+use \PHY\Markup;
+$markup = Markup::create('HTML5');
+
+/*
+ * Now for some example usage of using the Markup class itself.
+ */
+var_dump($markup->isTagVoid('br'));
+var_dump($markup->has('div'));
+
+$markup->add('banana', [], true);
+$markup->has('banana');
+var_dump($markup->isTagVoid('banana'));
+
+$markup->remove('canvas', 'height');
+var_dump($markup->has('canvas', 'height'));
+
+$markup->remove('video');
+var_dump($markup->has('video'));
 ```
 
 
@@ -91,4 +113,4 @@ TODO
 - Finish writing tests for this.
 - Finish my other projects that utilize this class.
 - Add some more documentation and examples.
-- Add a Factory class, PHY\Markup.
+- Maybe buff up the Factory class a bit.
