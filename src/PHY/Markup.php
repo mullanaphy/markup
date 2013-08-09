@@ -31,11 +31,11 @@
          */
         public static function create($markup = 'HTML5')
         {
-            $class = __NAMESPACE__.'\\'.$markup;
+            $class = '\\PHY\\Markup\\'.$markup;
             if (class_exists($class)) {
                 return new $class;
             } else {
-                throw new namespace\Exception('Could not find markup language for "'.$markup.'"');
+                throw new \PHY\Markup\Exception('Could not find markup language for "'.$markup.'"');
             }
         }
 
