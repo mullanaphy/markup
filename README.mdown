@@ -51,6 +51,11 @@ echo $article;
 About
 -----
 
+Created this so I could dynamically create HTML blocks and link them together
+without having to worry about creating the actual HTML strings until it was time
+to push it to the server. Found it very helpful to create anchor tags as well as
+dynamic lists this way.
+
 Requirements
 ------------
 
