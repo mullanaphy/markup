@@ -88,5 +88,7 @@ it then so I wanted to continue it's sexiness in PHP.
 TODO
 ----
 
-Finish writing tests for this. Finish my other projects that utilize this class.
-Add some more documentation and examples.
+- Finish writing tests for this.
+- Finish my other projects that utilize this class.
+- Add some more documentation and examples.
+- Add a Factory class, PHY\Markup.
