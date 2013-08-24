@@ -600,7 +600,7 @@
             } else if (strpos($link, '@')) {
                 $link = 'mailto:'.$link;
             }
-            $attributes = $this->markup->attributes('a', $attributes);
+            $attributes = $this->markup->attributes('a', $attributes)?:[];
             if (!array_key_exists('title', $attributes) && (is_string($content) || is_numeric($content))) {
                 $attributes['title'] = $content;
             }
