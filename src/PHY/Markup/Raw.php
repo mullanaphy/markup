@@ -19,7 +19,7 @@
      * @license http://www.wtfpl.net/
      * @author John Mullanaphy <john@jo.mu>
      */
-    class Raw extends \PHY\Markup\AMarkup
+    class Raw extends AMarkup
     {
 
         const DOCTYPE = '';

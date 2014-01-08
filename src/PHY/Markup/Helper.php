@@ -20,17 +20,16 @@
      * @license http://www.wtfpl.net/
      * @author John Mullanaphy <john@jo.mu>
      */
-    class Helper
+    class Helper implements IHelper
     {
 
+        /* @var IMarkup $markup */
         protected $markup = null;
 
         /**
-         * Inject our Markup object.
-         *
-         * @param \PHY\Markup\AMarkup $markup
+         * {@inheritDoc}
          */
-        public function __construct(\PHY\Markup\AMarkup $markup)
+        public function __construct(IMarkup $markup)
         {
             $this->markup($markup);
         }
@@ -46,12 +45,9 @@
         }
 
         /**
-         * Getter\Setter for \PHY\Markup\AMarkup.
-         * 
-         * @param \PHY\Markup\AMarkup $name Description
-         * @return \PHY\Markup\AMarkup
+         * {@inheritDoc}
          */
-        public function markup(\PHY\Markup\AMarkup $markup = null)
+        public function markup(IMarkup $markup = null)
         {
             if (null !== $markup) {
                 $this->markup = $markup;
@@ -61,11 +57,7 @@
         }
 
         /**
-         * Create a generic cancel button.
-         *
-         * @param string $value
-         * @param array $attributes Optional
-         * @return \PHY\Markup\Element
+         * {@inheritDoc}
          */
         public function cancel($value = null, array $attributes = [])
         {
@@ -75,18 +67,11 @@
             } else {
                 $attributes['class'] = 'btn btn-danger';
             }
-            return $this->markup->button
-                    ->attributes($attributes)
-                    ->append($value);
+            return $this->markup->button->attributes($attributes)->append($value);
         }
 
         /**
-         * Create a generic checkbox.
-         *
-         * @param string $name Name for the checkbox.
-         * @param mixed $label innerHTML to add after the input box itself.
-         * @param array $attributes Optional
-         * @return \PHY\Markup\Element
+         * {@inheritDoc}
          */
         public function checkbox($name = null, $label = '', array $attributes = [])
         {
@@ -107,12 +92,7 @@
         }
 
         /**
-         * A generic definition tag.
-         *
-         * @param string $term Term to be defined.
-         * @param mixed $definition Definition for $term.
-         * @param array $attributes Optional
-         * @return \PHY\Markup\Element
+         * {@inheritDoc}
          */
         public function definition($term = null, $definition = null, array $attributes = [])
         {
@@ -146,16 +126,7 @@
         }
 
         /**
-         * A simple hidden input field.
-         *
-         * IF $name is an array, it will create hidden inputs as $key => $label
-         * pairings and return an array of hidden fields while $value becomes
-         * $attributes.
-         *
-         * @param string|array $name
-         * @param string $value
-         * @param array $attributes Optional
-         * @return \PHY\Markup\Element
+         * {@inheritDoc}
          */
         public function hidden($name = null, $value = null, array $attributes = [])
         {
@@ -177,12 +148,7 @@
         }
 
         /**
-         * Return a generic img tag.
-         *
-         * @param string $src
-         * @param string $title Optional
-         * @param array $attributes Optional
-         * @return \PHY\Markup\Element
+         * {@inheritDoc}
          */
         public function image($src = null, $title = null, array $attributes = [])
         {
@@ -203,11 +169,7 @@
         }
 
         /**
-         * Create an ordered list via a supplied array.
-         *
-         * @param array $content
-         * @param array $attributes Optional
-         * @return \PHY\Markup\Element
+         * {@inheritDoc}
          */
         public function ordered(array $content = null, array $attributes = [], $tag = 'ol')
         {
@@ -241,11 +203,7 @@
         }
 
         /**
-         * Create a password input box.
-         *
-         * @param string $name
-         * @param array $attributes Optional
-         * @return \PHY\Markup\Element
+         * {@inheritDoc}
          */
         public function password($name = null, array $attributes = [])
         {
@@ -259,12 +217,7 @@
         }
 
         /**
-         * Create a group of radio buttons.
-         *
-         * @param string $name
-         * @param array $values
-         * @param array $attributes Optional. 'checked' => $key for choosing which radio is selected.
-         * @return \PHY\Markup\Element
+         * {@inheritDoc}
          */
         public function radio($name = null, array $values = null, array $attributes = [])
         {
@@ -310,24 +263,22 @@
                     $label = $this->markup->label([$this->markup->input($attributes_input), $value], $attributes);
                 } else {
                     $label = $this->markup->label([
-                        $this->markup->input(
-                            ($key === $checked)
-                                ? [
+                        $this->markup->input(($key === $checked)
+                            ? [
                                 'checked' => 'checked',
                                 'id' => $id.'-'.$key,
                                 'name' => $name,
                                 'type' => 'radio',
                                 'value' => $key
-                                ]
-                                : [
+                            ]
+                            : [
                                 'id' => $id.'-'.$key,
                                 'name' => $name,
                                 'type' => 'radio',
                                 'value' => $key
-                                ]
-                        ),
+                            ]),
                         $value
-                        ], $attributes);
+                    ], $attributes);
                 }
                 $radio[] = $label;
             }
@@ -335,12 +286,7 @@
         }
 
         /**
-         * Create a generic reset input button.
-         *
-         * @param string $name
-         * @param string $value
-         * @param array $attributes Optional
-         * @return \PHY\Markup\Element
+         * {@inheritDoc}
          */
         public function reset($name = null, $value = null, array $attributes = [])
         {
@@ -357,12 +303,7 @@
         }
 
         /**
-         * Create a generic select drop box.
-         *
-         * @param string $name
-         * @param array $values
-         * @param array $attributes Optional. 'selected' => $key for choosing which option is selected.
-         * @return \PHY\Markup\Markup
+         * {@inheritDoc}
          */
         public function selectbox($name = null, array $values = [], array $attributes = [])
         {
@@ -384,52 +325,50 @@
                     if (is_array($value['content'])) {
                         $optgroup = $this->markup->optgroup;
                         foreach ($value['content'] as $k => $v) {
-                            $option = $this->markup->option($v['content'], (
-                                ('selected' === $k || $k === $selected)
-                                    ? ['selected' => 'selected', 'value' => ((array_key_exists('value', $v))
+                            $option = $this->markup->option($v['content'], (('selected' === $k || $k === $selected)
+                                ? [
+                                    'selected' => 'selected',
+                                    'value' => ((array_key_exists('value', $v))
                                         ? $v['value']
-                                        : $v['content'])]
-                                    : ['value' => ((array_key_exists('value', $v))
+                                        : $v['content'])
+                                ]
+                                : [
+                                    'value' => ((array_key_exists('value', $v))
                                         ? $v['value']
-                                        : $v['content'])]
-                                )
-                            );
+                                        : $v['content'])
+                                ]));
                             $optgroup->append($option);
                         }
                         $select->append($optgroup);
                     } else {
-                        $option = $this->markup->option($value, (
-                            ('selected' === $key || $key === $selected)
-                                ? ['selected' => 'selected', 'value' => ((array_key_exists('value', $value))
+                        $option = $this->markup->option($value, (('selected' === $key || $key === $selected)
+                            ? [
+                                'selected' => 'selected',
+                                'value' => ((array_key_exists('value', $value))
                                     ? $value['value']
-                                    : $value['content'])]
-                                : ['value' => ((array_key_exists('value', $value))
+                                    : $value['content'])
+                            ]
+                            : [
+                                'value' => ((array_key_exists('value', $value))
                                     ? $value['value']
-                                    : $value['content'])]
-                            )
-                        );
+                                    : $value['content'])
+                            ]));
                         $select->append($option);
                     }
                 } else {
                     if (is_array($value)) {
                         $optgroup = $this->markup->optgroup;
                         foreach ($value as $k => $v) {
-                            $option = $this->markup->option($v, (
-                                ('selected' === $k || $k === $selected)
-                                    ? ['selected' => 'selected', 'value' => $v]
-                                    : ['value' => $v]
-                                )
-                            );
+                            $option = $this->markup->option($v, (('selected' === $k || $k === $selected)
+                                ? ['selected' => 'selected', 'value' => $v]
+                                : ['value' => $v]));
                             $optgroup->append($option);
                         }
                         $select->append($optgroup);
                     } else {
-                        $option = $this->markup->option($value, (
-                            ('selected' === $key || $key === $selected)
-                                ? ['selected' => 'selected', 'value' => $key]
-                                : ['value' => $key]
-                            )
-                        );
+                        $option = $this->markup->option($value, (('selected' === $key || $key === $selected)
+                            ? ['selected' => 'selected', 'value' => $key]
+                            : ['value' => $key]));
                         $select->append($option);
                     }
                 }
@@ -438,12 +377,7 @@
         }
 
         /**
-         * Create a generic submit button.
-         *
-         * @param string $name
-         * @param string $value
-         * @param array $attributes Optional
-         * @return \PHY\Markup\Element
+         * {@inheritDoc}
          */
         public function submit($name = null, $value = null, array $attributes = [])
         {
@@ -470,13 +404,7 @@
         }
 
         /**
-         * Create a generic textbox. If size = 1 it will be an input box, any
-         * larger and it becomes a textarea.
-         *
-         * @param string $name
-         * @param int $size
-         * @param array $attributes Optional
-         * @return \PHY\Markup\Element
+         * {@inheritDoc}
          */
         public function textbox($name = null, $size = 1, array $attributes = [])
         {
@@ -497,9 +425,8 @@
                 }
             }
             $attributes = $this->markup->attributes((($size <= 1)
-                    ? 'input'
-                    : 'textarea'
-                ), $attributes);
+                ? 'input'
+                : 'textarea'), $attributes);
             $attributes['name'] = $name;
             if ($size <= 1) {
                 if (null !== $value) {
@@ -523,18 +450,7 @@
         }
 
         /**
-         * Create a generic time tag.
-         *
-         * IF $date is an array, then the current time is used and no format
-         * is set while $date is mapped to $attributes instead.
-         *
-         * IF there is no format then timestamp will come back as a relative
-         * time difference from time().
-         *
-         * @param \DateTime $date
-         * @param string $format
-         * @param array $attributes
-         * @return \PHY\Markup\Element
+         * {@inheritDoc}
          */
         public function timestamp(\DateTime $date, $format = 'Y-m-d H:i:s', array $attributes = [])
         {
@@ -549,11 +465,7 @@
         }
 
         /**
-         * Create a generic unordered list out of an array.
-         *
-         * @param array $content
-         * @param array $attributes Optional
-         * @return \PHY\Markup\Element
+         * {@inheritDoc}
          */
         public function unordered($content = null, array $attributes = [])
         {
@@ -561,13 +473,7 @@
         }
 
         /**
-         * Create a generic anchor tag.
-         *
-         * @param mixed $content innerHTML of the anchor tag.
-         * @param string|array $link array will create a ?key=value structure
-         * while the first value in the array will be the link itself.
-         * @param array $attributes Optional
-         * @return \PHY\Markup\Element
+         * {@inheritDoc}
          */
         public function url($content = null, $link = null, $attributes = null)
         {
@@ -600,7 +506,8 @@
             } else if (strpos($link, '@')) {
                 $link = 'mailto:'.$link;
             }
-            $attributes = $this->markup->attributes('a', $attributes)?:[];
+            $attributes = $this->markup->attributes('a', $attributes)
+                ? : [];
             if (!array_key_exists('title', $attributes) && (is_string($content) || is_numeric($content))) {
                 $attributes['title'] = $content;
             }

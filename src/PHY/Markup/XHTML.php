@@ -19,7 +19,7 @@
      * @license http://www.wtfpl.net/
      * @author John Mullanaphy <john@jo.mu>
      */
-    class XHTML extends \PHY\Markup\AMarkup
+    class XHTML extends AMarkup
     {
 
         const DOCTYPE = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
@@ -170,7 +170,7 @@
                     '_parent',
                     '_self',
                     '_top'
-            ],
+                ],
             ],
             'bdo' => true,
             'blockquote' => [
@@ -202,7 +202,7 @@
                     'checkbox',
                     'command',
                     'radio'
-            ],
+                ],
             ],
             'datalist' => true,
             'dd' => true,
@@ -579,7 +579,7 @@
                 'wrap' => [
                     'hard',
                     'soft'
-            ],
+                ],
             ],
             'tfoot' => true,
             'th' => [

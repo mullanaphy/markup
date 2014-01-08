@@ -11,6 +11,9 @@
 
     namespace PHY;
 
+    use PHY\Markup\IMarkup;
+    use PHY\Markup\Exception;
+
     /**
      * Factory builder for Markup.
      *
@@ -26,8 +29,8 @@
          * Create a Markup instance based on the language.
          *
          * @param string $markup
-         * @return \PHY\Markup\AMarkup
-         * @throws \PHY\Markup\Exception
+         * @return IMarkup
+         * @throws Exception
          */
         public static function create($markup = 'HTML5')
         {
@@ -35,7 +38,7 @@
             if (class_exists($class)) {
                 return new $class;
             } else {
-                throw new \PHY\Markup\Exception('Could not find markup language for "'.$markup.'"');
+                throw new Exception('Could not find markup language for "'.$markup.'"');
             }
         }
 

@@ -31,12 +31,12 @@
         /**
          * Creates a Markup_Element based on provided data.
          *
-         * @param \PHY\Markup\AMarkup $markup
+         * @param IMarkup $markup
          * @param string $tag
          * @param array $attributes
          * @param bool $void
          */
-        public function __construct(\PHY\Markup\AMarkup $markup, $tag = 'div', $attributes = [], $void = false)
+        public function __construct(IMarkup $markup, $tag = 'div', $attributes = [], $void = false)
         {
             $this->markup = $markup;
             if (is_array($attributes)) {
@@ -99,6 +99,12 @@
             return $this->toString();
         }
 
+        /**
+         * Generates the HTML and will recursively generate HTML out of inner
+         * content.
+         *
+         * @return string
+         */
         public function toString()
         {
             if ($this->void) {
@@ -108,26 +114,47 @@
             }
         }
 
+        /**
+         * Generates the HTML and will recursively generate HTML out of inner
+         * content.
+         *
+         * @return string
+         */
         public function toHtml()
         {
             return $this->toString();
         }
 
+        /**
+         * Return our element as an array.
+         *
+         * @return array
+         */
         public function toArray()
         {
-            return $this->content;
+            return [
+                'tag' => $this->tag,
+                'void' => $this->void,
+                'attributes' => $this->attributes,
+                'content' => $this->recursivelyArrayify($this->content)
+            ];
         }
 
+        /**
+         * Return our element as a JSON object.
+         *
+         * @return string
+         */
         public function toJson()
         {
-            return json_encode($this->content);
+            return json_encode($this->toArray());
         }
 
         /**
          * Append content into an element.
          *
          * @param mixed $content
-         * @return \PHY\Markup\Element
+         * @return Element
          */
         public function append($content = null)
         {
@@ -147,7 +174,7 @@
          * Change attributes of an element.
          *
          * @param array $attributes
-         * @return \PHY\Markup\Element
+         * @return Element
          */
         public function attributes(array $attributes)
         {
@@ -161,7 +188,7 @@
          * array.
          *
          * @param array $data
-         * @return \PHY\Markup\Element
+         * @return Element
          */
         public function data(array $data)
         {
@@ -183,11 +210,11 @@
 
         /**
          * Set the Markup class to be used internally.
-         * 
-         * @param \PHY\Markup\AMarkup $markup
-         * @return \PHY\Markup\Element
+         *
+         * @param IMarkup $markup
+         * @return Element
          */
-        public function markup(\PHY\Markup\AMarkup $markup)
+        public function markup(IMarkup $markup)
         {
             $this->markup = $markup;
             return $this;
@@ -197,7 +224,7 @@
          * Prepend content into an element.
          *
          * @param mixed $content
-         * @return \PHY\Markup\Element
+         * @return Element
          */
         public function prepend($content = null)
         {
@@ -217,7 +244,7 @@
          * Change the tag type of an element.
          *
          * @param string $tag
-         * @return \PHY\Markup\Element
+         * @return Element
          */
         public function tag($tag = 'div')
         {
@@ -229,7 +256,7 @@
          * Change whether this element is a void or not.
          *
          * @param bool $void
-         * @return \PHY\Markup\Element
+         * @return Element
          */
         public function void($void = true)
         {
@@ -241,8 +268,8 @@
          * This parses $key => $value attributes into a HTML $key="$value"
          * string.
          *
-         * @ignore
          * @return string HTML attributes.
+         * @ignore
          */
         private function createAttributes()
         {
@@ -251,15 +278,13 @@
                 if ('data' === $key && is_array($value)) {
                     foreach ($value as $k => $v) {
                         $return[] = 'data-'.$k.'="'.htmlentities(is_array($v)
-                                    ? implode(' ', $v)
-                                    : $v, ENT_QUOTES, 'UTF-8', false
-                            ).'"';
+                                ? implode(' ', $v)
+                                : $v, ENT_QUOTES, 'UTF-8', false).'"';
                     }
                 } else {
                     $return[] = $key.'="'.htmlentities(is_array($value)
-                                ? implode(' ', $value)
-                                : $value, ENT_QUOTES, 'UTF-8', false
-                        ).'"';
+                            ? implode(' ', $value)
+                            : $value, ENT_QUOTES, 'UTF-8', false).'"';
                 }
             }
             return count($return)
@@ -269,11 +294,11 @@
 
         /**
          * Recursively converts Markup objects into HTML by using
-         * \PHY\Markup\Element::__toString();
+         * Element::__toString();
          *
          * @param mixed $content
-         * @ignore
          * @return string
+         * @ignore
          */
         private function recursivelyStringify($content = null)
         {
@@ -290,4 +315,28 @@
             return implode('', $return);
         }
 
+        /**
+         * Recursively converts Markup objects into arrays by using
+         * Element::toArray();
+         *
+         * @param mixed $content
+         * @return array
+         * @ignore
+         */
+        private function recursivelyArrayify($content = null)
+        {
+            $return = [];
+            if (false === $content || null === $content) {
+                return;
+            } else if ($content instanceof Element) {
+                $return[] = $content->toArray();
+            } else if (!is_array($content)) {
+                $return[] = $content;
+            } else {
+                foreach ($content as $element) {
+                    $return[] = $this->recursivelyArrayify($element);
+                }
+            }
+            return $return;
+        }
     }

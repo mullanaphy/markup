@@ -20,7 +20,7 @@
      * @license http://www.wtfpl.net/
      * @author John Mullanaphy <john@jo.mu>
      */
-    class HTML4 extends \PHY\Markup\AMarkup
+    class HTML4 extends AMarkup
     {
 
         const DOCTYPE = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">';
@@ -152,7 +152,7 @@
                     '_parent',
                     '_self',
                     '_top'
-            ],
+                ],
             ],
             'bdo' => true,
             'blockquote' => [
@@ -184,7 +184,7 @@
                     'checkbox',
                     'command',
                     'radio'
-            ],
+                ],
             ],
             'datalist' => true,
             'dd' => true,
@@ -561,7 +561,7 @@
                 'wrap' => [
                     'hard',
                     'soft'
-            ],
+                ],
             ],
             'tfoot' => true,
             'th' => [

@@ -21,7 +21,7 @@
      * @license http://www.wtfpl.net/
      * @author John Mullanaphy <john@jo.mu>
      */
-    class HTML5 extends \PHY\Markup\AMarkup
+    class HTML5 extends AMarkup
     {
 
         const DOCTYPE = '<!DOCTYPE html>';
@@ -259,7 +259,7 @@
                     'checkbox',
                     'command',
                     'radio'
-            ],
+                ],
             ],
             'datalist' => true,
             'dd' => true,
@@ -631,7 +631,7 @@
                 'wrap' => [
                     'hard',
                     'soft'
-            ],
+                ],
             ],
             'tfoot' => true,
             'th' => [

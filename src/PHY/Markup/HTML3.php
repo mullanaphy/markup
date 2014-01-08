@@ -19,7 +19,7 @@
      * @license http://www.wtfpl.net/
      * @author John Mullanaphy <john@jo.mu>
      */
-    class HTML3 extends \PHY\Markup\AMarkup
+    class HTML3 extends AMarkup
     {
 
         const DOCTYPE = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">';

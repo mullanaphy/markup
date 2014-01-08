@@ -20,7 +20,7 @@
      * @author John Mullanaphy <john@jo.mu>
      * @abstract
      */
-    abstract class AMarkup
+    abstract class AMarkup implements IMarkup
     {
 
         protected $helper = null;
@@ -40,28 +40,22 @@
         }
 
         /**
-         * Calls a tag based on $Markup->$tag();
-         *
-         * @param mixed $innerHTML
-         * @param array $attributes
-         * @return \PHY\Markup\Element
+         * {@inheritDoc}
          */
         public function __call($function, $parameters)
         {
             $function = strtolower($function);
             if (!in_array($function, array_keys($this->tags))) {
-                throw new \PHY\Markup\Exception('Tag <strong>'.strtoupper($function).'</strong> is not defined in <strong>'.str_replace('\PHY\Markup\\', '', get_class($this)).'</strong>');
+                throw new Exception('Tag <strong>'.strtoupper($function).'</strong> is not defined in <strong>'.str_replace('\PHY\Markup\\', '', get_class($this)).'</strong>');
             }
             if (in_array($function, $this->voids)) {
-                $element = new \PHY\Markup\Element($this, $function, ((isset($parameters[0]))
-                        ? $this->attributes($function, $parameters[0])
-                        : null
-                    ), true);
+                $element = new Element($this, $function, ((isset($parameters[0]))
+                    ? $this->attributes($function, $parameters[0])
+                    : null), true);
             } else {
-                $element = new \PHY\Markup\Element($this, $function, ((isset($parameters[1]))
-                        ? $this->attributes($function, $parameters[1])
-                        : null
-                    ), false);
+                $element = new Element($this, $function, ((isset($parameters[1]))
+                    ? $this->attributes($function, $parameters[1])
+                    : null), false);
                 if (isset($parameters[0])) {
                     $element->append($parameters[0]);
                 }
@@ -70,9 +64,7 @@
         }
 
         /**
-         * Returns a tag object based on $Markup->$tag
-         *
-         * @return \PHY\Markup\Element
+         * {@inheritDoc}
          */
         public function __get($function)
         {
@@ -80,12 +72,7 @@
         }
 
         /**
-         * Cleans attributes of $attributes down to ones that are allowed for
-         * $tag.
-         *
-         * @param string $tag
-         * @param array $attributes
-         * @return array
+         * {@inheritDoc}
          */
         public function attributes($tag = null, $attributes = null)
         {
@@ -116,18 +103,12 @@
         }
 
         /**
-         * Adds a tag to the lexicon. If tag is already defined it will add any
-         * new attributes provided and set whether it is a void or not.
-         *
-         * @param string $tag
-         * @param array $attributes
-         * @param bool $void
-         * @return \PHY\Markup\AMarkup
+         * {@inheritDoc}
          */
         public function add($tag = null, $attributes = null, $void = false)
         {
             if (!is_string($tag)) {
-                throw new \PHY\Markup\Exception('New tags must be a string.');
+                throw new Exception('New tags must be a string.');
             }
             if (array_key_exists($tag, $this->tags)) {
                 if (is_array($attributes)) {
@@ -163,12 +144,7 @@
         }
 
         /**
-         * See if a markup tag is available. If attribute is sent it will also
-         * check to make sure that attribute exists.
-         *
-         * @param string $tag
-         * @param string $attribute If used it will also look for attribute.
-         * @return bool
+         * {@inheritDoc}
          */
         public function has($tag, $attribute = null)
         {
@@ -183,15 +159,9 @@
         }
 
         /**
-         * Remove a tag from the lexicon in use.
-         *
-         * IF Attributes are sent it will only remove attributes that are sent,
-         * NOT the tag itself.
-         *
-         * @param string $tag
-         * @param string $attribute If used it will only remove that attribute.
-         * @return \PHY\Markup\AMarkup
+         * {@inheritDoc}
          */
+
         public function remove($tag = null, $attribute = null)
         {
             if (array_key_exists($tag, $this->tags)) {
@@ -208,29 +178,24 @@
         }
 
         /**
-         * Return if a specific tag is a void.
-         * 
-         * @param string $tag
-         * @return bool
+         * {@inheritDoc}
          */
+
         public function isTagVoid($tag)
         {
             return $this->has($tag) && in_array($tag, $this->voids);
         }
 
         /**
-         * Return a helper class for building HTML. You can also inject a new
-         * helper if you ever have the need to overwrite the helper.
-         *
-         * @param \PHY\Markup\Helper $helper
-         * @return \PHY\Markup\Helper
+         * {@inheritDoc}
          */
-        public function helper(\PHY\Markup\Helper $helper = null)
+
+        public function helper(IHelper $helper = null)
         {
             if (null !== $helper) {
                 $this->helper = $helper;
             } else if (null === $this->helper) {
-                $this->helper = new \PHY\Markup\Helper($this);
+                $this->helper = new Helper($this);
             }
             return $this->helper;
         }
